@@ -35,7 +35,7 @@ export default function Quiz() {
 
         const { results } = await response.json();
 
-        const shuffledResults = results.map((e) => {
+        const shuffledResults = results.map((e:Question) => {
           let answers = [...e.incorrect_answers, e.correct_answer];
 
           answers = answers.map((value) => ({ value, sort: Math.random() }))
@@ -155,8 +155,8 @@ export default function Quiz() {
                 autoplay
                 style={{ height: "400px", width: "400px" }}
               />
-              <h1 className="mt-10 text-center font-extrabold text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                YOUR SCORE {" "}
+              <h1 className="mt-10 text-center font-bold text-transparent text-4xl bg-clip-text bg-black">
+                YOUR SCORE : {" "}
                 <span className="font-extrabold text-transparent text-10xl bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
                   {config.score}
                 </span>
