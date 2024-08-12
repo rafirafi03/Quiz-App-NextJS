@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -8,13 +8,13 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
-  quiz
-}:{
+  quiz,
+}: {
   children: React.ReactNode;
   quiz: React.ReactNode;
 }) {
-  const config = useQuiz((state) => state.config)
-  let render = config.status === "start" ? quiz:children
+  const config = useQuiz((state) => state.config);
+  let render = config.status === "start" ? quiz : children;
   return (
     <html lang="en">
       <body className={inter.className}>{render}</body>

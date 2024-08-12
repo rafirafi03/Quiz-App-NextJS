@@ -1,6 +1,6 @@
 "use client";
 
-import Header from '@/components/header'
+import Header from "@/components/header";
 import { useEffect, useState } from "react";
 import useQuiz from "../store";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,6 @@ interface Question {
   answers?: string[];
 }
 
-
 export default function Quiz() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answer, setAnswer] = useState<string>("");
@@ -22,38 +21,35 @@ export default function Quiz() {
   const config = useQuiz((state) => state.config);
   const addScore = useQuiz((state) => state.addScore);
 
-
   useEffect(() => {
     async function getQuestions() {
       try {
-
         setLoading(true);
 
-        const response = await fetch(`https://opentdb.com/api.php?amount=${config.numberOfQuestions}&category=${config.category.id}&difficulty=${config.level}&type=${config.type}`);
-
-        console.log(response,"resppppppponseeeeeeeeeeeeeeeee")
+        const response = await fetch(
+          `https://opentdb.com/api.php?amount=${config.numberOfQuestions}&category=${config.category.id}&difficulty=${config.level}&type=${config.type}`
+        );
 
         const { results } = await response.json();
 
-        const shuffledResults = results.map((e:Question) => {
+        const shuffledResults = results.map((e: Question) => {
           let answers = [...e.incorrect_answers, e.correct_answer];
 
-          answers = answers.map((value) => ({ value, sort: Math.random() }))
+          answers = answers
+            .map((value) => ({ value, sort: Math.random() }))
             .sort((a, b) => a.sort - b.sort)
             .map(({ value }) => value);
 
           return {
             ...e,
-            answers: answers
+            answers: answers,
           };
         });
 
-
-        console.log(shuffledResults, "shuffled");
         setQuestions([...shuffledResults]);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     }
 
@@ -65,8 +61,8 @@ export default function Quiz() {
     remainingQuestions.shift();
 
     setQuestions([...remainingQuestions]);
-    setAnswer("")
-  }
+    setAnswer("");
+  };
 
   const checkAnswer = (answer: string) => {
     if (answer === questions[0].correct_answer) {
@@ -78,20 +74,24 @@ export default function Quiz() {
 
   return (
     <>
-    <Header/>
-    {questions.length && !loading && (
-      <div className="max-w-screen-xl flex-wrap items-center mx-auto p-4 pb-0 flex justify-center mt-10">
-      <h1 className="mb-4 mt-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-3xl">
-        <span className="text-transparent bg-clip-text bg-black">Question Number</span>
-      </h1>
-    </div>
-    )}
+      <Header />
+      {questions.length && !loading && (
+        <div className="max-w-screen-xl flex-wrap items-center mx-auto p-4 pb-0 flex justify-center mt-10">
+          <h1 className="mb-4 mt-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-3xl">
+            <span className="text-transparent bg-clip-text bg-black">
+              Question Number
+            </span>
+          </h1>
+        </div>
+      )}
 
-<div className="max-w-screen-xl flex-wrap items-center mx-auto px-4 flex justify-center">
+      <div className="max-w-screen-xl flex-wrap items-center mx-auto px-4 flex justify-center">
         {questions.length ? (
           <h1 className="mb-4 mt-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-3xl lg:text-3xl">
             <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-800">
-              {`${config.numberOfQuestions - questions.length + 1}/${config.numberOfQuestions}`}
+              {`${config.numberOfQuestions - questions.length + 1}/${
+                config.numberOfQuestions
+              }`}
             </span>
           </h1>
         ) : null}
@@ -99,10 +99,11 @@ export default function Quiz() {
 
       <div className="max-w-screen-xl mx-auto p-4 flex justify-center">
         <div className="p-10 my-10 rounded-lg shadow-xl w-[65%]">
-
           {questions.length > 0 && (
             <>
-              <h2 className="text-xl font-bold mb-5 pt-3 pb-5 text-black">{questions[0].question}</h2>
+              <h2 className="text-xl font-bold mb-5 pt-3 pb-5 text-black">
+                {questions[0].question}
+              </h2>
 
               <div className="grid grid-cols-2 gap-4">
                 {questions[0].answers.map((Answer, index) => (
@@ -112,8 +113,10 @@ export default function Quiz() {
                     className={cn(
                       "w-full py-3 px-4 bg-gray-100 text-gray-800 rounded-md shadow-md hover:bg-slate-600 hover:text-white transition duration-300",
                       {
-                        "bg-red-700 hover:bg-red-700": answer && Answer !== answer,
-                        "bg-green-600 hover:bg-green-600": answer && Answer === answer,
+                        "bg-red-700 hover:bg-red-700":
+                          answer && Answer !== answer,
+                        "bg-green-600 hover:bg-green-600":
+                          answer && Answer === answer,
                         "text-gray-100": answer,
                       }
                     )}
@@ -135,7 +138,6 @@ export default function Quiz() {
             </>
           )}
 
-
           {!questions.length && loading && (
             <div className="w-full">
               <Skeleton className="h-[30px] mt-3 rounded-full w-full" />
@@ -143,8 +145,6 @@ export default function Quiz() {
               <Skeleton className="h-[30px] mt-3 rounded-full w-56" />
             </div>
           )}
-
-
 
           {!questions?.length && !loading && (
             <div className="flex flex-col justify-center items-center">
@@ -156,7 +156,7 @@ export default function Quiz() {
                 style={{ height: "400px", width: "400px" }}
               />
               <h1 className="mt-10 text-center font-bold text-transparent text-4xl bg-clip-text bg-black">
-                YOUR SCORE : {" "}
+                YOUR SCORE :{" "}
                 <span className="font-extrabold text-transparent text-10xl bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
                   {config.score}
                 </span>
@@ -171,11 +171,8 @@ export default function Quiz() {
               </button>
             </div>
           )}
-
-
         </div>
       </div>
     </>
-    
   );
 }

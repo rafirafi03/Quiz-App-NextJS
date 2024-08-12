@@ -60,7 +60,7 @@ const DropOptions = () => {
             <DropdownMenuSeparator />
             {categories.slice(0, 10).map((category) => (
               <DropdownMenuItem
-                className='bg-white'
+                className="bg-white"
                 key={category.id}
                 onClick={() => addCategory(category.id, category.name)}
               >
@@ -80,7 +80,11 @@ const DropOptions = () => {
             <DropdownMenuLabel>Select Level</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {level.map((e) => (
-              <DropdownMenuItem className='bg-white' key={e} onClick={() => addLevel(e)}>
+              <DropdownMenuItem
+                className="bg-white"
+                key={e}
+                onClick={() => addLevel(e)}
+              >
                 {e}
               </DropdownMenuItem>
             ))}
